@@ -11,6 +11,7 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.licious.sample.design.ui.base.BaseFragment
@@ -28,7 +29,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class ScannerFragment : BaseFragment<FragmentScannerBinding>() {
     private val qrCodeViewModel: ScannerViewModel by viewModels()
-    private val loginViewModel: LoginViewModel by viewModels()
+    private val loginViewModel: LoginViewModel by activityViewModels()
 
     private val vibrator: Vibrator by lazy {
         requireActivity().getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
@@ -56,21 +57,21 @@ class ScannerFragment : BaseFragment<FragmentScannerBinding>() {
     private fun initView() {
         loginViewModel.isLoggedIn.observe(viewLifecycleOwner, Observer { isLoggedIn ->
             if (!isLoggedIn) {
+                Toast.makeText(requireContext(), "Invalid first", Toast.LENGTH_SHORT).show()
                 findNavController().navigate(R.id.fragment_login)
             } else {
-                initView()
+                Toast.makeText(requireContext(), "done first", Toast.LENGTH_SHORT).show()
+                qrCodeViewModel.startCamera(viewLifecycleOwner, requireContext(), binding.previewView, ::onResult);
+
+                val toolbarView = layoutInflater.inflate(R.layout.layout_toolbar, binding.root as ViewGroup, false)
+                (binding.root as ViewGroup).addView(toolbarView)
+                val toolbar = toolbarView.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
+                toolbar.setNavigationOnClickListener {
+                    loginViewModel.logout()
+                    findNavController().navigate(R.id.fragment_login)
+                }
             }
         })
-
-        qrCodeViewModel.startCamera(viewLifecycleOwner, requireContext(), binding.previewView, ::onResult);
-
-        val toolbarView = layoutInflater.inflate(R.layout.layout_toolbar, binding.root as ViewGroup, false)
-        (binding.root as ViewGroup).addView(toolbarView)
-        val toolbar = toolbarView.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
-        toolbar.setNavigationOnClickListener {
-            loginViewModel.logout()
-            findNavController().navigate(R.id.fragment_login)
-        }
     }
 
     /**

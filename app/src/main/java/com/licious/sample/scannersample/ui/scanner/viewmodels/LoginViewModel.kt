@@ -22,4 +22,8 @@ class LoginViewModel : ViewModel() {
     fun logout() {
         _isLoggedIn.value = false
     }
+
+    fun getLoginStatus(): Boolean {
+        return _isLoggedIn.value ?: false
+    }
 }
