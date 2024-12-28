@@ -3,7 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_main"
-    app:startDestination="@id/fragment_scanner">
+    app:startDestination="@id/fragment_login">
+
+    <!-- Màn hình Login -->
+    <fragment
+        android:id="@+id/fragment_login"
+        android:name="com.licious.sample.scannersample.ui.scanner.LoginFragment"
+        android:label="Login"
+        tools:layout="@layout/fragment_login" />
 
     <fragment
         android:id="@+id/fragment_scanner"

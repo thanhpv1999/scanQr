@@ -5,4 +5,7 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="permission_msg">It is important to provide this permission for seamless experience. Application will exit automatically.</string>
+    <string name="username_hint">ScannerSample</string>
+    <string name="password_hint">ScannerSample</string>
+    <string name="login_button_text">ScannerSample</string>
 </resources>

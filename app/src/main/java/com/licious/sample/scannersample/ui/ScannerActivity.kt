@@ -68,9 +68,6 @@ class ScannerActivity : BaseActivity<ActivityScannerBinding>(), IGetPermissionLi
     private fun initView(){
         permissionUtil.setPermissionListener(this)
         navController = binding.navHostFragment.getFragment<NavHostFragment>().navController
-        binding.viewToolBar.toolbar.setNavigationOnClickListener{
-           finish()
-        }
     }
 
     /**

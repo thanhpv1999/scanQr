@@ -6,14 +6,20 @@ import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.view.View
+import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Toast
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import com.licious.sample.design.ui.base.BaseFragment
 import com.licious.sample.scannersample.databinding.FragmentScannerBinding
+import androidx.navigation.fragment.findNavController
 import com.licious.sample.scannersample.ui.scanner.viewmodels.ScannerViewModel
 import com.licious.sample.scanner.ScannerViewState
+import com.licious.sample.scannersample.R
+import com.licious.sample.scannersample.ui.scanner.viewmodels.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -22,6 +28,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class ScannerFragment : BaseFragment<FragmentScannerBinding>() {
     private val qrCodeViewModel: ScannerViewModel by viewModels()
+    private val loginViewModel: LoginViewModel by viewModels()
 
     private val vibrator: Vibrator by lazy {
         requireActivity().getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
@@ -47,7 +54,23 @@ class ScannerFragment : BaseFragment<FragmentScannerBinding>() {
      *  Initialise views and and handle click listeners here
      */
     private fun initView() {
-        qrCodeViewModel.startCamera(viewLifecycleOwner, requireContext(), binding.previewView, ::onResult)
+        loginViewModel.isLoggedIn.observe(viewLifecycleOwner, Observer { isLoggedIn ->
+            if (!isLoggedIn) {
+                findNavController().navigate(R.id.fragment_login)
+            } else {
+                initView()
+            }
+        })
+
+        qrCodeViewModel.startCamera(viewLifecycleOwner, requireContext(), binding.previewView, ::onResult);
+
+        val toolbarView = layoutInflater.inflate(R.layout.layout_toolbar, binding.root as ViewGroup, false)
+        (binding.root as ViewGroup).addView(toolbarView)
+        val toolbar = toolbarView.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
+        toolbar.setNavigationOnClickListener {
+            loginViewModel.logout()
+            findNavController().navigate(R.id.fragment_login)
+        }
     }
 
     /**
