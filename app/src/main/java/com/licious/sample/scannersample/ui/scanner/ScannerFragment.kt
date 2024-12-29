@@ -5,10 +5,12 @@ import android.os.Build
 import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.activityViewModels
@@ -17,10 +19,14 @@ import androidx.lifecycle.Observer
 import com.licious.sample.design.ui.base.BaseFragment
 import com.licious.sample.scannersample.databinding.FragmentScannerBinding
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.licious.sample.scannersample.ui.scanner.viewmodels.ScannerViewModel
 import com.licious.sample.scanner.ScannerViewState
 import com.licious.sample.scannersample.R
 import com.licious.sample.scannersample.ui.scanner.viewmodels.LoginViewModel
+import com.licious.sample.scannersample.ui.scanner.viewmodels.RealtimeDatabaseViewModel
+import com.licious.sample.scannersample.ui.scanner.viewmodels.User
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -30,6 +36,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class ScannerFragment : BaseFragment<FragmentScannerBinding>() {
     private val qrCodeViewModel: ScannerViewModel by viewModels()
     private val loginViewModel: LoginViewModel by activityViewModels()
+    private val realtimeDatabaseViewModel: RealtimeDatabaseViewModel by activityViewModels()
 
     private val vibrator: Vibrator by lazy {
         requireActivity().getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
@@ -44,7 +51,24 @@ class ScannerFragment : BaseFragment<FragmentScannerBinding>() {
         super.onViewCreated(view, savedInstanceState)
         initView()
         startAnimation()
+        observeRealtimeDatabase()
     }
+
+    private fun observeRealtimeDatabase() {
+        realtimeDatabaseViewModel.users.observe(viewLifecycleOwner) { users ->
+            binding.recyclerViewDatabase.apply {
+                layoutManager = LinearLayoutManager(context)
+                adapter = UserAdapter(users ?: emptyList()) // Gắn Adapter ngay cả khi danh sách rỗng
+            }
+        }
+
+        realtimeDatabaseViewModel.error.observe(viewLifecycleOwner) { errorMessage ->
+            errorMessage?.let {
+                Toast.makeText(requireContext(), "Error: $it", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
 
     override fun onDestroyView() {
         vibrator.cancel()
@@ -62,6 +86,7 @@ class ScannerFragment : BaseFragment<FragmentScannerBinding>() {
             } else {
                 Toast.makeText(requireContext(), "done first", Toast.LENGTH_SHORT).show()
                 qrCodeViewModel.startCamera(viewLifecycleOwner, requireContext(), binding.previewView, ::onResult);
+                realtimeDatabaseViewModel.addUser("thanh", "van")
 
                 val toolbarView = layoutInflater.inflate(R.layout.layout_toolbar, binding.root as ViewGroup, false)
                 (binding.root as ViewGroup).addView(toolbarView)
@@ -124,5 +149,30 @@ class ScannerFragment : BaseFragment<FragmentScannerBinding>() {
     companion object {
         private const val TAG = "QrCodeReaderFragment"
         private const val VIBRATE_DURATION = 200L
+    }
+}
+
+class UserAdapter(private val users: List<User>) : RecyclerView.Adapter<UserViewHolder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_user, parent, false)
+        return UserViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
+        holder.bind(users[position])
+    }
+
+    override fun getItemCount(): Int = users.size
+}
+
+class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    private val tvUsername: TextView = itemView.findViewById(R.id.tvUsername)
+    private val tvEmail: TextView = itemView.findViewById(R.id.tvEmail)
+    private val tvTimestamp: TextView = itemView.findViewById(R.id.tvTimestamp)
+
+    fun bind(user: User) {
+        tvUsername.text = user.username
+        tvEmail.text = user.email
+        tvTimestamp.text = System.currentTimeMillis().toString()
     }
 }

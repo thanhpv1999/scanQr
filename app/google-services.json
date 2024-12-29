@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1046194114384",
+    "project_id": "scannerqr-638d6",
+    "storage_bucket": "scannerqr-638d6.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1046194114384:android:546ac1644fcd22a8e5e655",
+        "android_client_info": {
+          "package_name": "com.licious.sample.scannersample"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC7zgmBjZ9a0jgo3JPn0j8wr_w8M4dn3fM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

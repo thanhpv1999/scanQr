@@ -41,4 +41,18 @@
 
     </FrameLayout>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewDatabase"
+        android:layout_width="match_parent"
+        android:layout_height="700dp"
+        android:padding="8dp"
+        android:clipToPadding="false"
+        android:scrollbars="vertical"
+        android:background="@android:color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/previewView"
+        tools:listitem="@layout/item_user" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

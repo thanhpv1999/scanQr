@@ -3,6 +3,7 @@ plugins {
     id (Plugin.androidKotlin)
     kotlin(Plugin.kotlinAndroidKapt)
     id (Plugin.daggerHilt)
+    id ("com.google.gms.google-services")
 }
 
 android {
@@ -46,4 +47,10 @@ dependencies {
     testEspressoCore()
     jUnit()
     navigation()
+
+    implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-database")
+    implementation("com.google.firebase:firebase-firestore")
 }

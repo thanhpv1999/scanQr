@@ -4,4 +4,5 @@ plugins {
     id (Plugin.androidLibrary) version Versions.kotlin apply false
     id (Plugin.androidKotlin) version Versions.androidKotlin apply false
     id (Plugin.daggerHilt) version Versions.daggerHilt apply false
+    id("com.google.gms.google-services") version "4.4.2" apply false
 }

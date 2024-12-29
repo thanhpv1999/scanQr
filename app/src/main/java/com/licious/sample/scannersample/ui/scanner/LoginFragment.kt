@@ -23,10 +23,15 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         super.onViewCreated(view, savedInstanceState)
         loginViewModel.logout()
         binding.btnLogin.setOnClickListener {
-            val username = binding.etUsername.text.toString()
+            val email = binding.etUsername.text.toString()
             val password = binding.etPassword.text.toString()
 
-            loginViewModel.login(username, password)
+            if (email.isEmpty() || password.isEmpty()) {
+                Toast.makeText(requireContext(), "Please fill all fields", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            loginViewModel.login(email, password)
 
             // Lắng nghe trạng thái đăng nhập
             loginViewModel.isLoggedIn.observe(viewLifecycleOwner, Observer { isLoggedIn ->
