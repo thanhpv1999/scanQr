@@ -8,4 +8,5 @@
     <string name="username_hint">ScannerSample</string>
     <string name="password_hint">ScannerSample</string>
     <string name="login_button_text">ScannerSample</string>
+    <string name="IdHome">IdHome</string>
 </resources>

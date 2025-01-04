@@ -18,5 +18,14 @@
         android:textColor="@color/white_0"
         android:textSize="@dimen/_18sp" />
 
+    <ImageButton
+        android:id="@+id/btn_right"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginRight="20dp"
+        android:layout_gravity="end"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_back" />
+
 </androidx.appcompat.widget.Toolbar>
 

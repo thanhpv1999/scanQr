@@ -37,7 +37,11 @@ class RealtimeDatabaseViewModel : ViewModel() {
 
     // Hàm để thêm người dùng mới
     fun addUser(username: String, email: String) {
-        val newUser = User(username, email)
+        val newUser = mapOf(
+            "username" to username,
+            "email" to email,
+            "timestamp" to ServerValue.TIMESTAMP
+        )
         usersReference.push().setValue(newUser)
             .addOnCompleteListener { task ->
                 if (!task.isSuccessful) {
@@ -60,5 +64,6 @@ class RealtimeDatabaseViewModel : ViewModel() {
 // Data class đại diện cho User
 data class User(
     val username: String = "",
-    val email: String = ""
+    val email: String = "",
+    val timestamp: Long = 0L
 )

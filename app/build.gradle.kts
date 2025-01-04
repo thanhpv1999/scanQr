@@ -37,11 +37,22 @@ android {
         dataBinding.enable = true
         viewBinding.enable = true
     }
+
+    packagingOptions {
+        resources {
+            excludes += listOf(
+                "META-INF/INDEX.LIST",
+                "META-INF/io.netty.versions.properties",
+            )
+        }
+    }
 }
 
 dependencies {
     implementation(project(":design"))
     implementation(project(":scanner"))
+    implementation("androidx.navigation:navigation-fragment-ktx:2.8.5")
+    implementation("androidx.navigation:navigation-ui-ktx:2.8.5")
     androidX()
     daggerHilt()
     testEspressoCore()
@@ -53,4 +64,6 @@ dependencies {
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-database")
     implementation("com.google.firebase:firebase-firestore")
+    implementation("com.hivemq:hivemq-mqtt-client:1.3.1")
+
 }

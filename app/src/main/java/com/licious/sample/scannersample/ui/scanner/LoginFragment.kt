@@ -11,22 +11,29 @@ import com.licious.sample.design.ui.base.BaseFragment
 import com.licious.sample.scannersample.R
 import com.licious.sample.scannersample.databinding.FragmentLoginBinding
 import com.licious.sample.scannersample.ui.scanner.viewmodels.LoginViewModel
+import com.licious.sample.scannersample.ui.scanner.viewmodels.MqttViewModel
 
 class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     private val loginViewModel: LoginViewModel by activityViewModels()
+    private val mqttViewModel: MqttViewModel by activityViewModels()
+
     override fun getLogTag(): String = "LoginFragment"
+    val idHome = ""
 
     override fun getViewBinding(): FragmentLoginBinding =
         FragmentLoginBinding.inflate(layoutInflater)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val idHome =""
+        mqttViewModel.idHomeMqtt = idHome;
         loginViewModel.logout()
         binding.btnLogin.setOnClickListener {
             val email = binding.etUsername.text.toString()
             val password = binding.etPassword.text.toString()
+            val idHome = binding.etIdHome.text.toString()
 
-            if (email.isEmpty() || password.isEmpty()) {
+            if (email.isEmpty() || password.isEmpty() || idHome.isEmpty()) {
                 Toast.makeText(requireContext(), "Please fill all fields", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
@@ -37,6 +44,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
             loginViewModel.isLoggedIn.observe(viewLifecycleOwner, Observer { isLoggedIn ->
                 if (isLoggedIn) {
                     Toast.makeText(requireContext(), "login done", Toast.LENGTH_SHORT).show()
+                    mqttViewModel.idHomeMqtt = "MQTT_$idHome"
                     findNavController().navigate(R.id.fragment_scanner)
                 } else {
                     Toast.makeText(requireContext(), "Invalid credentials", Toast.LENGTH_SHORT).show()
