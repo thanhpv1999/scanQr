@@ -26,7 +26,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val idHome =""
-        mqttViewModel.idHomeMqtt = idHome;
+        mqttViewModel.idHomeMqtt = idHome
+        mqttViewModel.user = ""
         loginViewModel.logout()
         binding.btnLogin.setOnClickListener {
             val email = binding.etUsername.text.toString()
@@ -45,6 +46,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
                 if (isLoggedIn) {
                     Toast.makeText(requireContext(), "login done", Toast.LENGTH_SHORT).show()
                     mqttViewModel.idHomeMqtt = "MQTT_$idHome"
+                    mqttViewModel.user = email.split("@")[0]
                     findNavController().navigate(R.id.fragment_scanner)
                 } else {
                     Toast.makeText(requireContext(), "Invalid credentials", Toast.LENGTH_SHORT).show()

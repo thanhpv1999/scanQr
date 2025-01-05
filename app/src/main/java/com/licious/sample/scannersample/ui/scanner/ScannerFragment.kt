@@ -177,9 +177,9 @@ class ScannerFragment : BaseFragment<FragmentScannerBinding>() {
                 val topic = "${mqttViewModel.idHomeMqtt}/REMOTE"
                 if(textQr != ""){
                     if(textQr == result){
-                        mqttViewModel.publish(topic, "remote: done")
+                        mqttViewModel.publish(topic, "${mqttViewModel.user}: done")
                     }else{
-                        mqttViewModel.publish(topic, "remote: fail")
+                        mqttViewModel.publish(topic, "${mqttViewModel.user}: fail")
                     }
                     textQr = ""
                 }

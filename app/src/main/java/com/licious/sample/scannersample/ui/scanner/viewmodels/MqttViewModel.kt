@@ -37,6 +37,7 @@ class MqttViewModel : ViewModel() {
     private val _isConnected = MutableLiveData<Boolean>()
     val isConnected: LiveData<Boolean> get() = _isConnected
     var idHomeMqtt = ""
+    var user = ""
 
     private val _receivedMessage = MutableLiveData<String>()
     val receivedMessage: LiveData<String> get() = _receivedMessage
